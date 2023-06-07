@@ -1,21 +1,15 @@
 const { decorCtrlWrapp } = require('../decorators');
 
-const {
-  listContacts,
-  getContactById,
-  removeContact,
-  addContact,
-  updateContact,
-} = require('../models/contacts');
+const Contact = require('../models/contacts');
 
 const allContacts = async (req, res) => {
-  const result = await listContacts();
+  const result = await Contact.find({}, '-createdAt -updatedAt');
   res.json(result);
 };
 
 const contactById = async (req, res) => {
   const { contactId } = req.params;
-  const result = await getContactById(contactId);
+  const result = await Contact.findById(contactId);
   if (!result) {
     throw HttpError(404, `Contact with this ID:${contactId} is not found`);
   }
@@ -24,13 +18,13 @@ const contactById = async (req, res) => {
 
 const addNewContact = async (req, res) => {
   const body = req.body;
-  const result = await addContact(body);
+  const result = await Contact.create(body);
   res.status(201).json(result);
 };
 
 const deleteContactById = async (req, res) => {
   const { contactId } = req.params;
-  const result = await removeContact(contactId);
+  const result = await Contact.findByIdAndDelete(contactId);
   if (!result) {
     throw HttpError(404, `Operation fault, contact with this ID:${contactId} is not found`);
   }
@@ -40,9 +34,18 @@ const deleteContactById = async (req, res) => {
 const changeContact = async (req, res) => {
   const body = req.body;
   const { contactId } = req.params;
-  const result = await updateContact(contactId, body);
+  const result = await Contact.findByIdAndUpdate(contactId, body, { new: true });
   if (!result) {
     throw HttpError(404, `Contact with this ID:${contactId} is not found`);
+  }
+  res.json(result);
+};
+const updateStatusContact = async (req, res) => {
+  const body = req.body;
+  const { contactId } = req.params;
+  const result = await Contact.findByIdAndUpdate(contactId, body, { new: true });
+  if (!result) {
+    throw HttpError(404, `Not found`);
   }
   res.json(result);
 };
@@ -53,4 +56,5 @@ module.exports = {
   contactById: decorCtrlWrapp(contactById),
   deleteContactById: decorCtrlWrapp(deleteContactById),
   changeContact: decorCtrlWrapp(changeContact),
+  updateStatusContact: decorCtrlWrapp(updateStatusContact),
 };
