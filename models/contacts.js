@@ -1,11 +1,11 @@
-const { Schema, model } = require('mongoose');
-const { handelMongooseError } = require('../middlewares');
+const { Schema, model } = require("mongoose");
+const { handelMongooseError } = require("../middlewares");
 
 const contactsSchema = new Schema(
   {
     name: {
       type: String,
-      required: [true, 'Set name for contact'],
+      required: [true, "Set name for contact"],
     },
     email: {
       type: String,
@@ -21,8 +21,8 @@ const contactsSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-contactsSchema.post('save', handelMongooseError);
+contactsSchema.post("save", handelMongooseError);
 
-const Contact = model('contacts', contactsSchema);
+const Contact = model("contacts", contactsSchema);
 
 module.exports = Contact;
