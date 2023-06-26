@@ -1,4 +1,4 @@
 const isValidId = require('./isValidId');
-const handelMongooseError = require('./handleMongooseError');
+const authenticate = require('./authenticate');
 
-module.exports = { isValidId, handelMongooseError };
+module.exports = { isValidId, authenticate };

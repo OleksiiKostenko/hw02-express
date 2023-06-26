@@ -1,15 +1,15 @@
-const app = require('./app');
-require('dotenv').config();
+const app = require("./app");
+require("dotenv").config();
 const { DB_HOST, PORT } = process.env;
 
-const { connect } = require('mongoose');
+const { connect } = require("mongoose");
 connect(DB_HOST)
   .then(() => {
     app.listen(PORT, () => {
-      console.log('Database connection successful');
+      console.log("Database connection successful");
     });
   })
-  .catch(error => {
+  .catch((error) => {
     console.log(error);
     process.exit(1);
   });
